@@ -4,31 +4,36 @@ using UnityEngine;
 
 public class DragAndDropSupplier : MonoBehaviour
 {
-    private bool isDragging;
+    //private bool isDragging;
     public GameObject Supply;
+    public GameObject pfSupply;
 
 
     public void OnMouseDown()
     {
-        isDragging = true;
-        Supply = GenerateSupply();
+        //isDragging = true;
+        Supply = (GameObject)Instantiate(pfSupply, transform);
+        Supply.transform.position = transform.position;
+        Supply.gameObject.GetComponent<Item>().isDragging = true;
+
     }
 
     public void OnMouseUp()
     {
-        isDragging = false;
+        //Supply.gameObject.GetComponent<Item>().isDragging = false;
     }
 
     void Update()
     {
+        /*
         if (isDragging)
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Supply.transform.position;
             Supply.transform.Translate(mousePosition);
-        }
+        } */
     }
 
-    private GameObject GenerateSupply()
+    public GameObject GenerateSupply()
     {
         GameObject item;
         GameObject pfTile = (GameObject)Instantiate(Resources.Load("Select"));

@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class ToolHandler : MonoBehaviour
 {
-    [SerializeField] private int rows = 6;
-    [SerializeField] private int cols = 8;
+    private int rows = 0;
+    private int cols = 1;
     [SerializeField] private float tileSize = 1;
     [SerializeField] private string color = "White";
-    [SerializeField] private int quad = 0;
+    [SerializeField] private List<GameObject> pfTools;
+   // [SerializeField] private int quad = 0;
     //private GameObject MainGrid;
   
     
@@ -16,6 +17,7 @@ public class ToolHandler : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        rows = pfTools.Count;
         //MainGrid = transform.Find("GridSystem").gameObject;
         GenerateGrid();
         
@@ -34,7 +36,10 @@ public class ToolHandler : MonoBehaviour
                 float posX = col * tileSize;
                 float poxY = row * -tileSize;
 
-                Tile.transform.position = new Vector2(posX, poxY);
+                Tile.transform.position = new Vector2(posX, poxY) + new Vector2(transform.position.x, transform.position.y);
+                Tile.GetComponent<DragAndDropSupplier>().pfSupply = pfTools[row];
+
+                //GameObject item = Tile.GetComponent<DragAndDropSupplier>().GenerateSupply();
             }
 
         }
@@ -44,10 +49,10 @@ public class ToolHandler : MonoBehaviour
 
         float gridW = cols * tileSize;
         float gridH = rows * tileSize;
-        float mainH = GridHandler.getHeightStatic();
-        float mainW = GridHandler.getWidthStatic();
+        //float mainH = GridHandler.getHeightStatic();
+        //float mainW = GridHandler.getWidthStatic();
 
-        
+        /*
         if (quad == 0)
         {
             transform.position = new Vector2(0,0);//(-gridW / 2 + tileSize / 2, gridH / 2 - tileSize / 2);
@@ -60,7 +65,7 @@ public class ToolHandler : MonoBehaviour
         {
             transform.position = new Vector2(-mainW + tileSize, -tileSize);
         } 
-        
+        */
 
     }
 

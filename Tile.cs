@@ -5,18 +5,22 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     private bool isDragging;
+    public GameObject item= null;
+    public bool isHoldingItem;
+    private Vector3 center;
 
-
-    public void OnMouseDown()
+    private void Start()
     {
-        isDragging = true;
+        center = transform.position;
     }
 
-    public void OnMouseUp()
+    public Vector3 GetCenter()
     {
-        isDragging = false;
+        return center;
     }
 
+
+    /*
     void Update()
     {
         if (isDragging)
@@ -25,6 +29,8 @@ public class Tile : MonoBehaviour
             transform.Translate(mousePosition);
         }
     }
+
+    */
 
 
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UserMouse : MonoBehaviour
 {
+    /*
     GameObject cursor;
     Ray ray;
     RaycastHit2D hit;
@@ -34,7 +35,7 @@ public class UserMouse : MonoBehaviour
         // DEBUG // teleports select box on mouse click
         if (Input.GetButtonDown("Fire1")) {
             cursor.transform.position = worldPosition;
-        } */
+        } 
 
         // mouse collisions
         hit = Physics2D.Raycast(worldPosition, Vector2.zero, 0);
@@ -48,5 +49,5 @@ public class UserMouse : MonoBehaviour
 
     }
 
-
+*/
 }
