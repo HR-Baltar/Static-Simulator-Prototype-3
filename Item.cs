@@ -66,6 +66,8 @@ public class Item : MonoBehaviour
 
     public void SnapOn(Transform collider)
     {
-        transform.position = collider.position;
+        // by ignoring the z axis perhaps the layers situation is fixed
+        transform.position = new Vector3 (collider.position.x, collider.position.y, transform.position.z);
+        
     }
 }
