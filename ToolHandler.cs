@@ -8,7 +8,7 @@ public class ToolHandler : MonoBehaviour
     private int cols = 1;
     [SerializeField] private float tileSize = 1;
     [SerializeField] private string color = "White";
-    [SerializeField] private List<GameObject> pfTools;
+    [SerializeField] private List<GameObject> pfTools = null;
    // [SerializeField] private int quad = 0;
     //private GameObject MainGrid;
   

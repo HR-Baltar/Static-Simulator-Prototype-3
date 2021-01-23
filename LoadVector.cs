@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class LoadVector : Item
 {
+    [SerializeField] private float load_value;
+
+
+    public float GetLoadValue(){
+        return load_value;
+    }
+    public void SetLoadValue(float new_val){
+        load_value = new_val;
+    }
     private void OnTriggerStay2D(Collider2D collision)
     {
         //Debug.Log(collision.gameObject.name);
@@ -15,9 +24,22 @@ public class LoadVector : Item
             {
                 isHeld = true;
                 SnapOn(collision.gameObject.transform);
-                collision.gameObject.GetComponent<Material>().loads.Add(gameObject);
+                OpenInputMenu();
+                //collision.gameObject.GetComponent<Material>().loads.Add(gameObject);
+            }else{
+                Debug.Log("Bad Input");
             }
 
         }
     }
+
+    private void OpenInputMenu(){
+        //opens an input menu to give this load a value
+        //GameObject force_input = GameObject.Find("ForceInput");
+        //force_input.GetComponent<ForceInput>();
+        StateSystem.ChangeToWaiting();
+        ForceInput._Show();
+        ForceInput._Caller(gameObject);
+    }
+    
 }

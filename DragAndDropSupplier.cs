@@ -12,10 +12,11 @@ public class DragAndDropSupplier : MonoBehaviour
     public void OnMouseDown()
     {
         //isDragging = true;
-        Supply = (GameObject)Instantiate(pfSupply, transform);
-        Supply.transform.position = transform.position;
-        Supply.gameObject.GetComponent<Item>().isDragging = true;
-
+        if(StateSystem.isBuilding()){
+            Supply = (GameObject)Instantiate(pfSupply, transform);
+            Supply.transform.position = transform.position;
+            Supply.gameObject.GetComponent<Item>().isDragging = true;
+        }
     }
 
     public void OnMouseUp()

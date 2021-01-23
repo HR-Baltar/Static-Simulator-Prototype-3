@@ -29,11 +29,12 @@ public class Item : MonoBehaviour
     }
 
     void Update()
-    {
-        if (isDragging && !isHeld)
-        {
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            transform.Translate(mousePosition);
+    {   if(StateSystem.isBuilding()){
+            if (isDragging && !isHeld)
+            {
+                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+                transform.Translate(mousePosition);
+            }
         }
         //Debug.Log(isDragging);
         
