@@ -5,7 +5,7 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     private bool isDragging;
-    public GameObject item= null;
+    private GameObject item = null;
     public bool isHoldingItem;
     private Vector3 center;
 
@@ -17,6 +17,19 @@ public class Tile : MonoBehaviour
     public Vector3 GetCenter()
     {
         return center;
+    }
+
+    public void ReplaceItem(GameObject g){
+        DiscardItem();
+        UpdateItem(g);
+    }
+    private void DiscardItem(){
+        Destroy(item);
+        isHoldingItem = false;
+    }
+    public void UpdateItem(GameObject g){
+        item = g; 
+        isHoldingItem = true;
     }
 
 

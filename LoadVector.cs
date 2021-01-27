@@ -5,8 +5,12 @@ using UnityEngine;
 public class LoadVector : Item
 {
     [SerializeField] private float load_value;
+    //mate_tag = "Material";
 
-
+    private void Start()
+    {
+        mate_tag = "Material";
+    }
     public float GetLoadValue(){
         return load_value;
     }
@@ -15,6 +19,9 @@ public class LoadVector : Item
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
+        if(collision.gameObject.tag == mate_tag){
+            isOverLappingTile = true;
+        }
         //Debug.Log(collision.gameObject.name);
         if (isDragging == false && !isHeld)
         {
@@ -24,10 +31,10 @@ public class LoadVector : Item
             {
                 isHeld = true;
                 SnapOn(collision.gameObject.transform);
+                //Debug.Log(DragAndDropSupplier._GetSupplierName());
+                //DragAndDropSupplier._PopSupply();
                 OpenInputMenu();
                 //collision.gameObject.GetComponent<Material>().loads.Add(gameObject);
-            }else{
-                Debug.Log("Bad Input");
             }
 
         }

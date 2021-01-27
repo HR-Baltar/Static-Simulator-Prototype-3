@@ -6,6 +6,7 @@ public class ForceInput : MonoBehaviour
 {
     private static ForceInput instance;
     private GameObject caller;
+    private GameObject CursorHomePointer;
     
     void Awake(){
         instance = this;
@@ -30,6 +31,12 @@ public class ForceInput : MonoBehaviour
     }
     public static void _ReturnValue(float val){
         instance.caller.GetComponent<LoadVector>().SetLoadValue(val);// = val;
+    }
+    public static void _SetBackCursorSupply(){
+        instance.CursorHomePointer.GetComponent<DragAndDropSupplier>().SetCursorActive();
+    }
+    public static void _SaveCursorHome(GameObject g){
+        instance.CursorHomePointer = g;
     }
 
 }

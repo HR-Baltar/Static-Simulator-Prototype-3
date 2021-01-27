@@ -24,7 +24,10 @@ public class SubmitButton : MonoBehaviour
             value_to_return = float.Parse(text_to_convert);
             StateSystem.ChangeToBuilding();
             ForceInput._ReturnValue(value_to_return);
+            ForceInput._SetBackCursorSupply();
             ForceInput._Hide();
+        }else{
+            Debug.Log("Bad Input");
         }
         //else -> bring up warning text
     }

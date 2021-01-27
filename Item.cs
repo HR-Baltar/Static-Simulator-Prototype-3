@@ -4,27 +4,24 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public bool isDragging;
-    private Vector3 center;
+    public bool isDragging = true;
+    //private Vector3 center;
     public bool isHeld = false;
-
-    private void Start()
-    {
-        center = transform.position;
-    }
-
+    public bool isOverLappingTile = false;
+    public string mate_tag = "Tile";
+    //private GameObject mateHomePointer;
 
     public void OnMouseDown()
     {
-        if (!isHeld) { 
-            isDragging = true;
-        }
-        //isHeld = true;
+        //isDragging = true;
+        //isHeld = false;
+     
+        
     }
 
     public void OnMouseUp()
     {
-        isDragging = false;
+        //isDragging = false;
         
     }
 
@@ -41,9 +38,27 @@ public class Item : MonoBehaviour
     }
 
     
+    public bool IsOverLapping(){
+        
+        return isOverLappingTile;
+    }
+    private void OnTriggerExit2D(Collider2D collision){
+        if(collision.gameObject.tag == mate_tag){
+            isOverLappingTile = false;
+        }
 
+    }
     private void OnTriggerStay2D(Collider2D collision)
     {
+        
+        if(collision.gameObject.tag == mate_tag){
+            //Debug.Log(IsOverLapping());
+            if(!collision.gameObject.GetComponent<Tile>().isHoldingItem){
+                isOverLappingTile = true;
+
+            }
+        }
+
         
         if (isDragging == false && !isHeld && collision.gameObject.tag == "Tile")
         {
@@ -55,14 +70,18 @@ public class Item : MonoBehaviour
                 //Debug.Log("Yay : " + isDragging);//debug
                 //Debug.Log("Item: " + transform.position);
                 //Debug.Log("Tile:" + collision.transform.position);
-                collision.gameObject.GetComponent<Tile>().isHoldingItem = true;
-                collision.gameObject.GetComponent<Tile>().item = gameObject;
+                //collision.gameObject.GetComponent<Tile>().isHoldingItem = true;
+                collision.gameObject.GetComponent<Tile>().UpdateItem(gameObject);
                 isHeld = true;
-
+                SnapOn(collision.gameObject.transform);
+            }else {
+                isHeld = true;
+                collision.gameObject.GetComponent<Tile>().ReplaceItem(gameObject);
                 SnapOn(collision.gameObject.transform);
             }
             
         }
+        //Debug.Log(isDragging + " " + isHeld);
     }
 
     public void SnapOn(Transform collider)
