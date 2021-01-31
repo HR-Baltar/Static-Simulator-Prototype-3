@@ -9,6 +9,7 @@ public class Item : MonoBehaviour
     public bool isHeld = false;
     public bool isOverLappingTile = false;
     public string mate_tag = "Tile";
+    private GameObject tile_ptr = null;
     //private GameObject mateHomePointer;
 
     public void OnMouseDown()
@@ -42,7 +43,9 @@ public class Item : MonoBehaviour
         
         return isOverLappingTile;
     }
+
     private void OnTriggerExit2D(Collider2D collision){
+        Debug.Log("pass");
         if(collision.gameObject.tag == mate_tag){
             isOverLappingTile = false;
         }
@@ -52,7 +55,7 @@ public class Item : MonoBehaviour
     {
         
         if(collision.gameObject.tag == mate_tag){
-            //Debug.Log(IsOverLapping());
+
             if(!collision.gameObject.GetComponent<Tile>().isHoldingItem){
                 isOverLappingTile = true;
 
@@ -65,12 +68,7 @@ public class Item : MonoBehaviour
             //Debug.Log(isDragging);
             if (collision.gameObject.GetComponent<Tile>().isHoldingItem == false)
             {
-                
 
-                //Debug.Log("Yay : " + isDragging);//debug
-                //Debug.Log("Item: " + transform.position);
-                //Debug.Log("Tile:" + collision.transform.position);
-                //collision.gameObject.GetComponent<Tile>().isHoldingItem = true;
                 collision.gameObject.GetComponent<Tile>().UpdateItem(gameObject);
                 isHeld = true;
                 SnapOn(collision.gameObject.transform);
@@ -89,5 +87,12 @@ public class Item : MonoBehaviour
         // by ignoring the z axis perhaps the layers situation is fixed
         transform.position = new Vector3 (collider.position.x, collider.position.y, transform.position.z);
         
+    }
+    public void SetTilePtr(GameObject g){
+        tile_ptr = g;
+    }
+    public void ErasedFromGrid(){
+        //update tile item
+        tile_ptr.GetComponent<Tile>().DiscardItem();
     }
 }

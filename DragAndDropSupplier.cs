@@ -33,6 +33,8 @@ public class DragAndDropSupplier : MonoBehaviour
         //Supply.gameObject.GetComponent<Item>().isDragging = false;
     }
 
+    
+
     void Update()
     {
         
@@ -43,7 +45,7 @@ public class DragAndDropSupplier : MonoBehaviour
             Supply.transform.Translate(mousePosition);
 
             
-            if(Input.GetMouseButtonDown(0) && Supply.GetComponent<Item>().IsOverLapping()){
+            if(Input.GetMouseButtonDown(0) && Supply.GetComponent<Item>().IsOverLapping() && Supply.gameObject.tag != "Eraser"){
                 //Debug.Log(Supply.GetComponent<Item>().isHeld + "click");
                 GameObject item = GenerateSupply();
                 

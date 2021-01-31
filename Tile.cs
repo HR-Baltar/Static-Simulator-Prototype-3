@@ -23,11 +23,12 @@ public class Tile : MonoBehaviour
         DiscardItem();
         UpdateItem(g);
     }
-    private void DiscardItem(){
+    public void DiscardItem(){
         Destroy(item);
         isHoldingItem = false;
     }
     public void UpdateItem(GameObject g){
+        g.GetComponent<Item>().SetTilePtr(gameObject);
         item = g; 
         isHoldingItem = true;
     }
