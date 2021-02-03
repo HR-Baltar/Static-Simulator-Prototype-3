@@ -6,31 +6,54 @@ public class Eraser : Item
 {    
     [SerializeField] private List<string> mateTags = null;
 
-    public void Start(){
-        //mateTags = new List<string>();
-        //Debug.Log(mateTags[0]);
-        
+
+
+    void Update()
+    {   if(StateSystem.isBuilding()){
+            if (isDragging)
+            {
+                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+                transform.Translate(mousePosition);
+
+                if(Input.GetMouseButtonDown(0) && GetContactsCount() > 0 ){
+                    ContactIndex(0).GetComponent<Item>().ErasedFromGrid();
+                }
+            }
+        }
     }
+
     public bool CheckingOverlappingMates(GameObject g){
-        Debug.Log(mateTags[0]);
+        //Debug.Log(mateTags[0]);
         for(int i = 0; i<mateTags.Count; i++){
-            Debug.Log(g.tag);
+            
             if(g.tag == mateTags[i]){
-                
+                //Debug.Log("pass");
                 return true;
             }
         }
         return false;
     }
-    private void OnTriggerStay2D(Collider2D collision)
+
+    public override void HandleExitingColliders(GameObject g){
+        
+        if(CheckingOverlappingMates(g)){
+            RemoveFromContacts(g);//contacts.Remove(g);
+
+            if(GetContactsCount() < 1){ 
+                isOverLappingTile = false;
+            }
+        }
+
+    }
+    public override void HandleEnteringColliders(GameObject g)
     {
         
-        if(CheckingOverlappingMates(collision.gameObject) && Input.GetMouseButtonDown(0)){
+        if(CheckingOverlappingMates(g)){// && Input.GetMouseButtonDown(0)){
 
             //if(!collision.gameObject.GetComponent<Tile>().isHoldingItem){
             isOverLappingTile = true;
-
-            collision.gameObject.GetComponent<Item>().ErasedFromGrid();
+            AddToContacts(g);//contacts.Add(g);
+            //collision.gameObject.GetComponent<Item>().ErasedFromGrid();
         }
 
     }

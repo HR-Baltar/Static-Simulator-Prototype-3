@@ -26,15 +26,27 @@ public class ForceInput : MonoBehaviour
     public static void _Hide(){
         instance.Hide();
     }
+
+    //saves caller info
     public static void _Caller(GameObject g){
         instance.caller = g;
     }
+
+    //sets the input value for the force
     public static void _ReturnValue(float val){
         instance.caller.GetComponent<LoadVector>().SetLoadValue(val);// = val;
     }
+
+    public static void _ReturnBool(bool t){
+        instance.caller.GetComponent<LoadVector>().SetLoadKnown(t);
+    }
+
+    //sets the cursor back to the home tool item
     public static void _SetBackCursorSupply(){
         instance.CursorHomePointer.GetComponent<DragAndDropSupplier>().SetCursorActive();
     }
+
+    //saves the tool item slot of use
     public static void _SaveCursorHome(GameObject g){
         instance.CursorHomePointer = g;
     }

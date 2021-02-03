@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public abstract class Item : MonoBehaviour
 {
     public bool isDragging = true;
     //private Vector3 center;
@@ -10,7 +10,12 @@ public class Item : MonoBehaviour
     public bool isOverLappingTile = false;
     public string mate_tag = "Tile";
     private GameObject tile_ptr = null;
+    private List<GameObject> contacts =new List<GameObject>();
     //private GameObject mateHomePointer;
+    void Start(){
+        
+    }
+
 
     public void OnMouseDown()
     {
@@ -28,6 +33,7 @@ public class Item : MonoBehaviour
 
     void Update()
     {   if(StateSystem.isBuilding()){
+            //Debug.Log(isOverLappingTile);
             if (isDragging && !isHeld)
             {
                 Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
@@ -45,41 +51,50 @@ public class Item : MonoBehaviour
     }
 
     private void OnTriggerExit2D(Collider2D collision){
-        Debug.Log("pass");
-        if(collision.gameObject.tag == mate_tag){
-            isOverLappingTile = false;
-        }
-
+        HandleExitingColliders(collision.gameObject);
     }
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-        if(collision.gameObject.tag == mate_tag){
+        HandleEnteringColliders(collision.gameObject);
+    }
 
-            if(!collision.gameObject.GetComponent<Tile>().isHoldingItem){
+    public virtual void HandleExitingColliders(GameObject g){
+        if(g.tag == mate_tag){
+            RemoveFromContacts(g);//contacts.Remove(collision.gameObject);
+
+            if(contacts.Count < 1){
+                isOverLappingTile = false;
+            }
+        }
+    }
+
+    public virtual void HandleEnteringColliders(GameObject g){
+        if(g.tag == mate_tag){
+
+            if(!g.GetComponent<Tile>().isHoldingItem){
                 isOverLappingTile = true;
-
+                AddToContacts(g);//contacts.Add(collision.gameObject);
             }
         }
 
         
-        if (isDragging == false && !isHeld && collision.gameObject.tag == "Tile")
+        if (isDragging == false && !isHeld && g.tag == mate_tag)
         {
-            //Debug.Log(isDragging);
-            if (collision.gameObject.GetComponent<Tile>().isHoldingItem == false)
+            
+
+            if (g.GetComponent<Tile>().isHoldingItem == false)
             {
 
-                collision.gameObject.GetComponent<Tile>().UpdateItem(gameObject);
+                g.GetComponent<Tile>().UpdateItem(gameObject);
                 isHeld = true;
-                SnapOn(collision.gameObject.transform);
+                SnapOn(g.transform);
             }else {
                 isHeld = true;
-                collision.gameObject.GetComponent<Tile>().ReplaceItem(gameObject);
-                SnapOn(collision.gameObject.transform);
+                g.GetComponent<Tile>().ReplaceItem(gameObject);
+                SnapOn(g.transform);
             }
             
         }
-        //Debug.Log(isDragging + " " + isHeld);
     }
 
     public void SnapOn(Transform collider)
@@ -91,8 +106,21 @@ public class Item : MonoBehaviour
     public void SetTilePtr(GameObject g){
         tile_ptr = g;
     }
-    public void ErasedFromGrid(){
+    public virtual void ErasedFromGrid(){
         //update tile item
         tile_ptr.GetComponent<Tile>().DiscardItem();
+    }
+    public void AddToContacts(GameObject g){
+
+        contacts.Add(g);
+    }
+    public void RemoveFromContacts(GameObject g){
+        contacts.Remove(g);
+    }
+    public int GetContactsCount(){
+        return contacts.Count;
+    }
+    public GameObject ContactIndex(int idx){
+        return contacts[idx];
     }
 }

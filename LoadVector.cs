@@ -5,6 +5,10 @@ using UnityEngine;
 public class LoadVector : Item
 {
     [SerializeField] private float load_value;
+    [SerializeField] private GameObject crossection_ptr;
+    [SerializeField] private string label = null;
+    [SerializeField] private float angle = 90f;
+    [SerializeField] private bool known = false;
     //mate_tag = "Material";
 
     private void Start()
@@ -17,24 +21,27 @@ public class LoadVector : Item
     public void SetLoadValue(float new_val){
         load_value = new_val;
     }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if(collision.gameObject.tag == mate_tag){
+
+    public void SetLoadKnown(bool t){
+        known = t;
+    }
+
+    public override void HandleEnteringColliders(GameObject g){
+        if(g.tag == mate_tag){
             isOverLappingTile = true;
         }
-        //Debug.Log(collision.gameObject.name);
+
         if (isDragging == false && !isHeld)
         {
            
             
-            if (collision.gameObject.tag == "Material")
+            if (g.tag == mate_tag)
             {
                 isHeld = true;
-                SnapOn(collision.gameObject.transform);
-                //Debug.Log(DragAndDropSupplier._GetSupplierName());
-                //DragAndDropSupplier._PopSupply();
+                crossection_ptr = g;
+                g.GetComponent<Material>().AddToLoads(gameObject);
+                SnapOn(g.transform);
                 OpenInputMenu();
-                //collision.gameObject.GetComponent<Material>().loads.Add(gameObject);
             }
 
         }
@@ -42,11 +49,14 @@ public class LoadVector : Item
 
     private void OpenInputMenu(){
         //opens an input menu to give this load a value
-        //GameObject force_input = GameObject.Find("ForceInput");
-        //force_input.GetComponent<ForceInput>();
-        StateSystem.ChangeToWaiting();
-        ForceInput._Show();
+
+        StateSystem.ChangeToWaiting(); //change state 
+        ForceInput._Show(); // display the ui
         ForceInput._Caller(gameObject);
+    }
+
+    public override void ErasedFromGrid(){
+        crossection_ptr.GetComponent<Material>().DiscardLoad(gameObject);
     }
     
 }

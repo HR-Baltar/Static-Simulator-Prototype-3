@@ -7,6 +7,7 @@ public class SubmitButton : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private GameObject input_field_text = null;
+    [SerializeField] private GameObject toggle_field = null;
     //[SerializeField]private Button button;
 
     void Start(){
@@ -20,12 +21,21 @@ public class SubmitButton : MonoBehaviour
         //Debug.Log("Click");// debug //
         float value_to_return;
         string text_to_convert = input_field_text.GetComponent<Text>().text;
-        if (CheckInputValid(text_to_convert)){
+
+        if(toggle_field.GetComponent<Toggle>().isOn){
+            StateSystem.ChangeToBuilding();
+            ForceInput._ReturnBool(false);
+            ForceInput._SetBackCursorSupply();
+            ForceInput._Hide();
+
+        } else if (CheckInputValid(text_to_convert)){
             value_to_return = float.Parse(text_to_convert);
             StateSystem.ChangeToBuilding();
             ForceInput._ReturnValue(value_to_return);
+            ForceInput._ReturnBool(true);
             ForceInput._SetBackCursorSupply();
             ForceInput._Hide();
+
         }else{
             Debug.Log("Bad Input");
         }
