@@ -29,6 +29,7 @@ public class LoadVector : Item
     public override void HandleEnteringColliders(GameObject g){
         if(g.tag == mate_tag){
             isOverLappingTile = true;
+            AddToContacts(g);
         }
 
         if (isDragging == false && !isOnGrid)
@@ -44,6 +45,13 @@ public class LoadVector : Item
                 OpenInputMenu();
             }
 
+        }
+    }
+    public override void HandleContactStatus(){
+            
+
+        if(GetContactsCount() < 1){
+            isOverLappingTile = false;
         }
     }
 

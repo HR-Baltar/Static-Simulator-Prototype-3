@@ -15,23 +15,32 @@ public class Material : Item
 
     public void OnMouseDown()
     {
-        if(isOnGrid){
-            isDragging = !isDragging;
-            isOnGrid = !isOnGrid;
-            //Debug.Log("db1");
-        }else {
-            isOnGrid = !isOnGrid;
-            isDragging = !isDragging;
-            if(isSpawned  && GetContactsCount() > 0){
-                GameObject tile = ContactIndex(GetContactsCount() - 1);
-                SnapOn(tile.transform);
+        if(StateSystem.isEditingGrid())
+            if(isOnGrid){
+                isDragging = !isDragging;
+                isOnGrid = !isOnGrid;
+                
+                GetTilePtr().GetComponent<Tile>().isHoldingItem = false;
+                //Debug.Log("db1");
+            }else {
+                //Debug.Log("contacts: "+GetContactsCount() + " Spawned: " + isSpawned);
+                
+                if(isSpawned  && GetContactsCount() > 0){
+                    isOnGrid = !isOnGrid;
+                    isDragging = !isDragging;
 
-                if(tile.GetComponent<Tile>().isHoldingItem == true){
-                    tile.GetComponent<Tile>().ReplaceItem(gameObject);
-                }else{
-                    tile.GetComponent<Tile>().UpdateItem(gameObject);
+                    GameObject tile = ContactIndex(GetContactsCount() - 1);
+                    //Debug.Log("check 2: " + tile.name);
+                    SnapOn(tile.transform);
+
+                    if(tile.GetComponent<Tile>().isHoldingItem == true){
+                        //Debug.Log("replace");
+                        tile.GetComponent<Tile>().ReplaceItem(gameObject);
+                    }else{
+                        //Debug.Log("update");
+                        tile.GetComponent<Tile>().UpdateItem(gameObject);
+                    }
                 }
-            }
         }
    
      

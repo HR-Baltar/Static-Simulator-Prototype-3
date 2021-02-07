@@ -34,7 +34,7 @@ public abstract class Item : MonoBehaviour
     }
 
     void Update()
-    {   if(StateSystem.isBuilding()){
+    {   if(StateSystem.isEditingGrid()){
             //Debug.Log(isOverLappingTile);
             if (isDragging && !isOnGrid)
             {
@@ -43,39 +43,11 @@ public abstract class Item : MonoBehaviour
 
 
             }
-
-            // if(Input.GetMouseButtonDown(0)){
-            //     //Debug.Log("colliding with tiles" + contacts.Count + isDragging);
-            //     GameObject ct = contacts[contacts.Count -1];
-            //     if (isDragging == false)
-            //     {
-            //         //Debug.Log("is dragging and mate tag is tile");
-            //         if(!isOnGrid){
-            //             SnapOn(g.transform);
-            //             isOnGrid = true;
-            //             Debug.Log("is on grid");
-            //             if (g.GetComponent<Tile>().isHoldingItem == false)
-            //             {
-            //                 Debug.Log("is holding");
-                        
-            //                 g.GetComponent<Tile>().UpdateItem(gameObject);
-
-            //             }else { 
-                                            
-            //                 g.GetComponent<Tile>().ReplaceItem(gameObject);
-                            
-            //             }
-
-            //         }else {
-            //         //g.GetComponent<Tile>().ReplaceItem(gameObject);
-
-            //         }
-
-
-            //     }
-            // }
         }
-        //Debug.Log(isDragging);
+
+        if(StateSystem.isBuilding()){
+            HandleContactStatus();
+        }
         
     }
 
@@ -104,43 +76,62 @@ public abstract class Item : MonoBehaviour
     }
 
     public virtual void HandleEnteringColliders(GameObject g){
+        
+
         if(g.tag == mate_tag){
 
             if(!g.GetComponent<Tile>().isHoldingItem){
                 isOverLappingTile = true;
+                //Debug.Log("added to contacts");
                 AddToContacts(g);//contacts.Add(collision.gameObject);
+            }
+
+            
+        } 
+        if(StateSystem.isBuilding()){
+
+            HandleContactSnapping(); 
+        }
+    }
+    public void HandleContactSnapping(){
+        //Debug.Log("colliding with tiles" + contacts.Count + isDragging);
+        if (isDragging == false  && isOverLappingTile && !isOnGrid )
+        {
+            
+            if(contacts.Count > 0){
+               
+                GameObject tile = contacts[contacts.Count-1];
+                SnapOn(tile.transform);
+                isOnGrid = true;
+                //Debug.Log("is on grid");
+                if (tile.GetComponent<Tile>().isHoldingItem == false)
+                {
+                    //Debug.Log("is holding");
+                   
+                    tile.GetComponent<Tile>().UpdateItem(gameObject);
+
+                }else { 
+                                    
+                    tile.GetComponent<Tile>().ReplaceItem(gameObject);
+                    
+                }
+
+            }
+
+        }
+    }
+    public virtual void HandleContactStatus(){
+            
+        for(int i = 0; i < contacts.Count; i++){
+            //Debug.Log(contacts[i].GetComponent<Tile>().isHoldingItem);
+            if(contacts[i].GetComponent<Tile>().isHoldingItem){
+                RemoveFromContacts(contacts[i]);
             }
         }
 
-        // Debug.Log("colliding with tiles" + contacts.Count + isDragging);
-        // if (isDragging == false  && g.tag == mate_tag)
-        // {
-        //     Debug.Log("is dragging and mate tag is tile");
-        //     if(!isOnGrid){
-        //         SnapOn(g.transform);
-        //         isOnGrid = true;
-        //         Debug.Log("is on grid");
-        //         if (g.GetComponent<Tile>().isHoldingItem == false)
-        //         {
-        //             Debug.Log("is holding");
-                   
-        //             g.GetComponent<Tile>().UpdateItem(gameObject);
-
-        //         }else { 
-                                    
-        //             g.GetComponent<Tile>().ReplaceItem(gameObject);
-                    
-        //         }
-
-        //     }else {
-        //        //g.GetComponent<Tile>().ReplaceItem(gameObject);
-
-        //     }
-
-
-        // }
-
-        
+        if(contacts.Count < 1){
+            isOverLappingTile = false;
+        }
     }
 
     public void SnapOn(Transform collider)
@@ -151,6 +142,9 @@ public abstract class Item : MonoBehaviour
     }
     public void SetTilePtr(GameObject g){
         tile_ptr = g;
+    }
+    public GameObject GetTilePtr(){
+        return tile_ptr;
     }
     public virtual void ErasedFromGrid(){
         //update tile item

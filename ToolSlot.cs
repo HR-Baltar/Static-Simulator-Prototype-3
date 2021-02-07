@@ -20,8 +20,9 @@ public class ToolSlot : MonoBehaviour
     public void OnMouseDown()
     {
         
-        if(StateSystem.isBuilding()){
+        if(StateSystem.isEditingGrid()){
             if(!isDragging){
+                StateSystem.ChangeToBuilding();
                 SetCursorActive();
             }
         }
@@ -47,6 +48,7 @@ public class ToolSlot : MonoBehaviour
             //Debug.Log(Supply.GetComponent<Item>().mate_tag + Supply.GetComponent<Item>().IsOverLapping());
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Supply.transform.position;
             Supply.transform.Translate(mousePosition);
+            //Debug.Log(Supply.GetComponent<Item>().IsOverLapping());
 
             
             if(Input.GetMouseButtonDown(0) && Supply.GetComponent<Item>().IsOverLapping() && Supply.gameObject.tag != "Eraser"){
@@ -57,6 +59,7 @@ public class ToolSlot : MonoBehaviour
                 item.GetComponent<Item>().isSpawned = true;
                 //Debug.Log(Supply.gameObject.tag);
                 if(Supply.gameObject.tag == "Force"){
+                    Debug.Log("click");
                     PopSupply();
                     ForceInput._SaveCursorHome(gameObject);
                 }
@@ -64,6 +67,7 @@ public class ToolSlot : MonoBehaviour
             } 
             else if(Input.GetMouseButtonDown(1)){
                 PopSupply();
+                StateSystem.ChangeToEditingGrid();
             }
         } 
     }

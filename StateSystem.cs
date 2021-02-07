@@ -10,13 +10,14 @@ public class StateSystem : MonoBehaviour
     private enum State{
         WaitingForInput,
         Building,
+        EditingGrid,
     }
     void Awake(){
         instance = this;
     }
     void Start()
     {
-        state = State.Building;
+        state = State.EditingGrid;
     }
     public static void ChangeToWaiting(){
         instance.state = State.WaitingForInput;
@@ -29,6 +30,12 @@ public class StateSystem : MonoBehaviour
     }
     public static bool isBuilding(){
         return (instance.state == State.Building);
+    }
+    public static void ChangeToEditingGrid(){
+        instance.state = State.EditingGrid;
+    }
+    public static bool isEditingGrid(){
+        return (instance.state == State.EditingGrid);
     }
 
 }
