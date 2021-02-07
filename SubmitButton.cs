@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class SubmitButton : MonoBehaviour
 {
-    // Start is called before the first frame update
+
     [SerializeField] private GameObject input_field_text = null;
     [SerializeField] private GameObject toggle_field = null;
-    //[SerializeField]private Button button;
+
 
     void Start(){
         //input_field = GameObject.Find("/ForceInput/InputField");

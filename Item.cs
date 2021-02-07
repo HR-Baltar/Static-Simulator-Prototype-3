@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,11 +7,12 @@ public abstract class Item : MonoBehaviour
 {
     public bool isDragging = true;
     //private Vector3 center;
-    public bool isHeld = false;
+    public bool isOnGrid = false;
     public bool isOverLappingTile = false;
     public string mate_tag = "Tile";
     private GameObject tile_ptr = null;
     private List<GameObject> contacts =new List<GameObject>();
+    public bool isSpawned = false;
     //private GameObject mateHomePointer;
     void Start(){
         
@@ -19,8 +21,8 @@ public abstract class Item : MonoBehaviour
 
     public void OnMouseDown()
     {
-        //isDragging = true;
-        //isHeld = false;
+        // isDragging = true;
+        // isOnGrid = false;
      
         
     }
@@ -34,11 +36,44 @@ public abstract class Item : MonoBehaviour
     void Update()
     {   if(StateSystem.isBuilding()){
             //Debug.Log(isOverLappingTile);
-            if (isDragging && !isHeld)
+            if (isDragging && !isOnGrid)
             {
                 Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
                 transform.Translate(mousePosition);
+
+
             }
+
+            // if(Input.GetMouseButtonDown(0)){
+            //     //Debug.Log("colliding with tiles" + contacts.Count + isDragging);
+            //     GameObject ct = contacts[contacts.Count -1];
+            //     if (isDragging == false)
+            //     {
+            //         //Debug.Log("is dragging and mate tag is tile");
+            //         if(!isOnGrid){
+            //             SnapOn(g.transform);
+            //             isOnGrid = true;
+            //             Debug.Log("is on grid");
+            //             if (g.GetComponent<Tile>().isHoldingItem == false)
+            //             {
+            //                 Debug.Log("is holding");
+                        
+            //                 g.GetComponent<Tile>().UpdateItem(gameObject);
+
+            //             }else { 
+                                            
+            //                 g.GetComponent<Tile>().ReplaceItem(gameObject);
+                            
+            //             }
+
+            //         }else {
+            //         //g.GetComponent<Tile>().ReplaceItem(gameObject);
+
+            //         }
+
+
+            //     }
+            // }
         }
         //Debug.Log(isDragging);
         
@@ -77,24 +112,35 @@ public abstract class Item : MonoBehaviour
             }
         }
 
+        // Debug.Log("colliding with tiles" + contacts.Count + isDragging);
+        // if (isDragging == false  && g.tag == mate_tag)
+        // {
+        //     Debug.Log("is dragging and mate tag is tile");
+        //     if(!isOnGrid){
+        //         SnapOn(g.transform);
+        //         isOnGrid = true;
+        //         Debug.Log("is on grid");
+        //         if (g.GetComponent<Tile>().isHoldingItem == false)
+        //         {
+        //             Debug.Log("is holding");
+                   
+        //             g.GetComponent<Tile>().UpdateItem(gameObject);
+
+        //         }else { 
+                                    
+        //             g.GetComponent<Tile>().ReplaceItem(gameObject);
+                    
+        //         }
+
+        //     }else {
+        //        //g.GetComponent<Tile>().ReplaceItem(gameObject);
+
+        //     }
+
+
+        // }
+
         
-        if (isDragging == false && !isHeld && g.tag == mate_tag)
-        {
-            
-
-            if (g.GetComponent<Tile>().isHoldingItem == false)
-            {
-
-                g.GetComponent<Tile>().UpdateItem(gameObject);
-                isHeld = true;
-                SnapOn(g.transform);
-            }else {
-                isHeld = true;
-                g.GetComponent<Tile>().ReplaceItem(gameObject);
-                SnapOn(g.transform);
-            }
-            
-        }
     }
 
     public void SnapOn(Transform collider)
@@ -108,6 +154,7 @@ public abstract class Item : MonoBehaviour
     }
     public virtual void ErasedFromGrid(){
         //update tile item
+       // Debug.Log("Error: erase");
         tile_ptr.GetComponent<Tile>().DiscardItem();
     }
     public void AddToContacts(GameObject g){
@@ -124,3 +171,4 @@ public abstract class Item : MonoBehaviour
         return contacts[idx];
     }
 }
+

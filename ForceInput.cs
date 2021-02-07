@@ -43,7 +43,7 @@ public class ForceInput : MonoBehaviour
 
     //sets the cursor back to the home tool item
     public static void _SetBackCursorSupply(){
-        instance.CursorHomePointer.GetComponent<DragAndDropSupplier>().SetCursorActive();
+        instance.CursorHomePointer.GetComponent<ToolSlot>().SetCursorActive();
     }
 
     //saves the tool item slot of use

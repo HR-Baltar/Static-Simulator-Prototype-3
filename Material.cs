@@ -13,6 +13,31 @@ public class Material : Item
         //contacts = new List<GameObject>();
     }
 
+    public void OnMouseDown()
+    {
+        if(isOnGrid){
+            isDragging = !isDragging;
+            isOnGrid = !isOnGrid;
+            //Debug.Log("db1");
+        }else {
+            isOnGrid = !isOnGrid;
+            isDragging = !isDragging;
+            if(isSpawned  && GetContactsCount() > 0){
+                GameObject tile = ContactIndex(GetContactsCount() - 1);
+                SnapOn(tile.transform);
+
+                if(tile.GetComponent<Tile>().isHoldingItem == true){
+                    tile.GetComponent<Tile>().ReplaceItem(gameObject);
+                }else{
+                    tile.GetComponent<Tile>().UpdateItem(gameObject);
+                }
+            }
+        }
+   
+     
+        
+    }
+
     public void DiscardLoad(GameObject load){
         loads.Remove(load);
         Destroy(load);

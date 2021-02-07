@@ -31,13 +31,13 @@ public class LoadVector : Item
             isOverLappingTile = true;
         }
 
-        if (isDragging == false && !isHeld)
+        if (isDragging == false && !isOnGrid)
         {
            
             
             if (g.tag == mate_tag)
             {
-                isHeld = true;
+                isOnGrid = true;
                 crossection_ptr = g;
                 g.GetComponent<Material>().AddToLoads(gameObject);
                 SnapOn(g.transform);

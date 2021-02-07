@@ -37,9 +37,9 @@ public class ToolHandler : MonoBehaviour
                 float poxY = row * -tileSize;
 
                 Tile.transform.position = new Vector2(posX, poxY) + new Vector2(transform.position.x, transform.position.y);
-                Tile.GetComponent<DragAndDropSupplier>().Set_pfSupply(pfTools[row]);
+                Tile.GetComponent<ToolSlot>().Set_pfSupply(pfTools[row]);
 
-                //GameObject item = Tile.GetComponent<DragAndDropSupplier>().GenerateSupply();
+                //GameObject item = Tile.GetComponent<ToolSlot>().GenerateSupply();
             }
 
         }

@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DragAndDropSupplier : MonoBehaviour
+public class ToolSlot : MonoBehaviour
 {
     private bool isDragging = false;
     private GameObject Supply;
+    private Sprite supplySprite = null;
     private GameObject pfSupply;
-    private static DragAndDropSupplier instance;
+    private Sprite toolDisplay = null;
+    private static ToolSlot instance;
    
 
     void Awake(){
         instance = this;
+        
     }
 
     public void OnMouseDown()
@@ -26,6 +29,7 @@ public class DragAndDropSupplier : MonoBehaviour
 
     public void Set_pfSupply(GameObject g){
         pfSupply = g;
+        supplySprite = pfSupply.GetComponent<SpriteRenderer>().sprite;
     }
  //   public void Set_Supply
     public void OnMouseUp()
@@ -46,10 +50,11 @@ public class DragAndDropSupplier : MonoBehaviour
 
             
             if(Input.GetMouseButtonDown(0) && Supply.GetComponent<Item>().IsOverLapping() && Supply.gameObject.tag != "Eraser"){
-                //Debug.Log(Supply.GetComponent<Item>().isHeld + "click");
+                //Debug.Log(Supply.GetComponent<Item>().isOnGrid + "click");
                 GameObject item = GenerateSupply();
                 
                 item.GetComponent<Item>().isDragging = false;
+                item.GetComponent<Item>().isSpawned = true;
                 //Debug.Log(Supply.gameObject.tag);
                 if(Supply.gameObject.tag == "Force"){
                     PopSupply();
@@ -66,6 +71,7 @@ public class DragAndDropSupplier : MonoBehaviour
     public void SetCursorActive(){
         isDragging = true;
         Supply = (GameObject)Instantiate(pfSupply);
+        
         Supply.transform.position = new Vector3(transform.position.x, transform.position.y, Supply.transform.position.z);
     }
 
