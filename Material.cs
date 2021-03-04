@@ -64,7 +64,7 @@ public class Material : Item
         //tile_ptr.GetComponent<Tile>().DiscardItem();
         if(loads.Count > 0){
             for(int i = 0; i<loads.Count; i++){
-                Destroy(loads[i]);
+                loads[i].GetComponent<LoadVector>().ErasedFromGrid();//Destroy(loads[i]);
             }
         }
 

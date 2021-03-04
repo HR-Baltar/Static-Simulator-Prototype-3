@@ -97,7 +97,7 @@ public class ToolSlot : MonoBehaviour
     {
         GameObject item;
         //GameObject pfTile = (GameObject)Instantiate(Resources.Load(item_name));
-        item = (GameObject)Instantiate(pfSupply);
+        item = (GameObject)Instantiate(pfSupply, transform);
         Vector2 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         item.transform.position = new Vector3(MousePos.x, MousePos.y, item.transform.position.z);
         //Destroy(pfTile);

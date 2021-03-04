@@ -40,7 +40,9 @@ public class ForceInput : MonoBehaviour
     public static void _ReturnBool(bool t){
         instance.caller.GetComponent<LoadVector>().SetLoadKnown(t);
     }
-
+    public static void _SaveForce(){
+        instance.GetComponentInParent<World>().AddToForces(instance.caller);
+    }
     //sets the cursor back to the home tool item
     public static void _SetBackCursorSupply(){
         instance.CursorHomePointer.GetComponent<ToolSlot>().SetCursorActive();

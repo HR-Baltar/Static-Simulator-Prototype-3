@@ -64,6 +64,7 @@ public class LoadVector : Item
     }
 
     public override void ErasedFromGrid(){
+        gameObject.GetComponentInParent<World>().RemoveFromForces(gameObject);
         crossection_ptr.GetComponent<Material>().DiscardLoad(gameObject);
     }
     

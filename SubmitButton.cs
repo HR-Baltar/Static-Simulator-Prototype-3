@@ -26,7 +26,9 @@ public class SubmitButton : MonoBehaviour
             StateSystem.ChangeToBuilding();
             ForceInput._ReturnBool(false);
             ForceInput._SetBackCursorSupply();
+            ForceInput._SaveForce(); //new
             ForceInput._Hide();
+            
 
         } else if (CheckInputValid(text_to_convert)){
             value_to_return = float.Parse(text_to_convert);
@@ -34,6 +36,7 @@ public class SubmitButton : MonoBehaviour
             ForceInput._ReturnValue(value_to_return);
             ForceInput._ReturnBool(true);
             ForceInput._SetBackCursorSupply();
+            ForceInput._SaveForce(); //new
             ForceInput._Hide();
 
         }else{
