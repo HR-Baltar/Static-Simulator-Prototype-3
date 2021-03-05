@@ -6,14 +6,16 @@ public class LoadVector : Item
 {
     [SerializeField] private float load_value;
     [SerializeField] private GameObject crossection_ptr;
-    [SerializeField] private string label = null;
+    //[SerializeField] private string label = null;
     [SerializeField] private float angle = 90f;
     [SerializeField] private bool known = false;
+    [SerializeField] Rigidbody2D rb2D = null;
     //mate_tag = "Material";
 
     private void Start()
     {
         mate_tag = "Material";
+        rb2D = GetComponent<Rigidbody2D>();
     }
     public float GetLoadValue(){
         return load_value;
@@ -24,6 +26,10 @@ public class LoadVector : Item
 
     public void SetLoadKnown(bool t){
         known = t;
+    }
+    public void SetLoadAngle(float a){
+        angle = a;
+        rb2D.rotation = angle;
     }
 
     public override void HandleEnteringColliders(GameObject g){

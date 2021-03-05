@@ -40,6 +40,9 @@ public class ForceInput : MonoBehaviour
     public static void _ReturnBool(bool t){
         instance.caller.GetComponent<LoadVector>().SetLoadKnown(t);
     }
+    public static void _ReturnAngle(float a){
+        instance.caller.GetComponent<LoadVector>().SetLoadAngle(a);
+    }
     public static void _SaveForce(){
         instance.GetComponentInParent<World>().AddToForces(instance.caller);
     }

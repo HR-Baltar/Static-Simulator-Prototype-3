@@ -18,21 +18,6 @@ public abstract class Item : MonoBehaviour
         
     }
 
-
-    public void OnMouseDown()
-    {
-        // isDragging = true;
-        // isOnGrid = false;
-     
-        
-    }
-
-    public void OnMouseUp()
-    {
-        //isDragging = false;
-        
-    }
-
     void Update()
     {   if(StateSystem.isEditingGrid()){
             //Debug.Log(isOverLappingTile);

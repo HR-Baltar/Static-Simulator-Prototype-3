@@ -5,7 +5,7 @@ using UnityEngine;
 public class World : MonoBehaviour
 {
 
-    [SerializeField] private List<GameObject> Forces;
+    [SerializeField] private List<GameObject> Forces = new List<GameObject>();
 
     public void AddToForces(GameObject force){
         Forces.Add(force);

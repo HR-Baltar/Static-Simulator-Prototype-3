@@ -8,7 +8,7 @@ public class ToolSlot : MonoBehaviour
     private GameObject Supply;
     private Sprite supplySprite = null;
     private GameObject pfSupply;
-    private Sprite toolDisplay = null;
+    //private Sprite toolDisplay = null;
     private static ToolSlot instance;
    
 
@@ -59,7 +59,7 @@ public class ToolSlot : MonoBehaviour
                 item.GetComponent<Item>().isSpawned = true;
                 //Debug.Log(Supply.gameObject.tag);
                 if(Supply.gameObject.tag == "Force"){
-                    Debug.Log("click");
+                    //Debug.Log("click");
                     PopSupply();
                     ForceInput._SaveCursorHome(gameObject);
                 }

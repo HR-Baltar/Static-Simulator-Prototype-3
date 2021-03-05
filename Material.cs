@@ -5,8 +5,8 @@ using UnityEngine;
 public class Material : Item
 {
     private List<GameObject> loads = null;
-    private string label = null;
-    [SerializeField] private bool isFixed = false;
+    //private string label = null;
+    //[SerializeField] private bool isFixed = false;
 
     void Start(){
         loads = new List<GameObject>();
