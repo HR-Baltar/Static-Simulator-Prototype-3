@@ -8,8 +8,10 @@ public class VectorSubmitButton : MonoBehaviour
 
     [SerializeField] private GameObject input_field_text = null;
     [SerializeField] private GameObject dropdown_field_option = null;
-    [SerializeField] private GameObject toggle_field = null;
-    [SerializeField] private GameObject simple_input_canvas = null;
+    [SerializeField] private GameObject toggle_unknown = null;
+    [SerializeField] private GameObject toggle_custom_angle = null;
+    [SerializeField] private GameObject angle_field_text;
+   // [SerializeField] private GameObject simple_input_canvas = null;
     [SerializeField] private float current_angle = 0;
 
 
@@ -20,36 +22,46 @@ public class VectorSubmitButton : MonoBehaviour
         button.onClick.AddListener(TaskOnClick);
     }
 
+
+
     void TaskOnClick(){
         //Debug.Log("Click");// debug //
-        float value_to_return;
+        //float value_to_return;
         string text_to_convert = input_field_text.GetComponent<Text>().text;
-        float dropdown_angle_index = dropdown_field_option.GetComponent<Dropdown>().value;
-        AngleFromDropdown(dropdown_angle_index);
+        
+        //set angle from user input
+        if(toggle_custom_angle.GetComponent<Toggle>().isOn){
+            current_angle = AngleFromCustom();
+        }else{
+            float dropdown_angle_index = dropdown_field_option.GetComponent<Dropdown>().value;
+            current_angle = AngleFromDropdown(dropdown_angle_index);
+        }
 
-        if(toggle_field.GetComponent<Toggle>().isOn){
-            StateSystem.ChangeToBuilding();
-            ForceInput._ReturnBool(false);
-            ForceInput._ReturnAngle(current_angle);
-            ForceInput._SetBackCursorSupply();
-            ForceInput._SaveForce(); //new
-            ForceInput._Hide();
-            
+        //submit based on user input
+        if(toggle_unknown.GetComponent<Toggle>().isOn){
+            Submit(false, text_to_convert);
 
         } else if (CheckInputValid(text_to_convert)){
-            value_to_return = float.Parse(text_to_convert);
-            StateSystem.ChangeToBuilding();
-            ForceInput._ReturnValue(value_to_return);
-            ForceInput._ReturnBool(true);
-            ForceInput._ReturnAngle(current_angle);
-            ForceInput._SetBackCursorSupply();
-            ForceInput._SaveForce(); //new
-            ForceInput._Hide();
+            Submit(true, text_to_convert);
 
         }else{
             Debug.Log("Bad Input");
         }
         //else -> bring up warning text
+    }
+
+    private void Submit(bool known, string text){
+        if(known){
+            //value_to_return = float.Parse(text_to_convert); //param
+            ForceInput._ReturnValue(float.Parse(text));
+        }
+
+        StateSystem.ChangeToBuilding();
+        ForceInput._ReturnBool(known);//param
+        ForceInput._ReturnAngle(current_angle);
+        ForceInput._SetBackCursorSupply();
+        ForceInput._SaveForce(); //new
+        ForceInput._Hide();
     }
 
     bool CheckInputValid(string value)
@@ -64,19 +76,17 @@ public class VectorSubmitButton : MonoBehaviour
     } 
 
     
-    private void AngleFromDropdown(float s){
-        // up down left right custom
+    private float AngleFromDropdown(float s){
+        // up down left right 
         
-        if(s == 0){current_angle = 90;}
-        else if(s==1){current_angle = 270;}
-        else if(s==2){current_angle = 180;}
-        else if(s==3){current_angle=0;}
-        else{
-            simple_input_canvas.SetActive(true);
-            simple_input_canvas.GetComponent<SimpleInput>().Set_Summoner(this);
-            
-        }
+        if(s == 0){return 90;}
+        else if(s==1){return 270;}
+        else if(s==2){return 180;}
+        else {return 0;}
 
+    }
+    private float AngleFromCustom (){
+        return float.Parse(angle_field_text.GetComponent<Text>().text);
     }
 
     public void SetAngle(float f){
