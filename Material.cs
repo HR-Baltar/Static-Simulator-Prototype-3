@@ -42,8 +42,6 @@ public class Material : Item
                     }
                 }
         }
-   
-     
         
     }
 
@@ -55,9 +53,6 @@ public class Material : Item
     public void AddToLoads(GameObject load){
         loads.Add(load);
     }
-    // public void ClearAllLoads(){
-    //     loads.Clear();
-    // }
 
     public override void ErasedFromGrid(){
         //update tile item
