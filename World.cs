@@ -4,14 +4,22 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
-
+    private static World instance;
     [SerializeField] private List<GameObject> Forces = new List<GameObject>();
+
+    void Awake(){
+        instance = this;
+    }
 
     public void AddToForces(GameObject force){
         Forces.Add(force);
     }
     public void RemoveFromForces(GameObject force){
         Forces.Remove(force);
+    }
+
+    public static void Solve(){
+        Debug.Log("Solving......");
     }
 
     //check valid equations and variables //REQUIRES ORIENTATION OF LOAD VECTORS
@@ -35,6 +43,7 @@ public class World : MonoBehaviour
                 params
                     value / null #float
                     angle / null #float
+                    sub eqn / null # list<variables>
                 methods
                     constructor () {value=null, angle=null}
                     Constructor (value, angle)
@@ -53,6 +62,51 @@ public class World : MonoBehaviour
                             return variable(0,0)
 
                     }
+
+    // Main program DEMO 2 // 
+    collect the forces into a list (DONE)
+    initialize two separate lists (X and Y)
+    for each force
+        initialize a variable() for each force entity
+        count unknowns based on varaibles. 
+        add unknowns to unknown list
+        if unknowns greater than 2
+            unsolvable
+        else
+            // case of one unknown and one equation
+            combine all other terms except for the unknown -> simplify()
+            set unknown equal to that sum
+        
+            // case of two unknowns and 2 equation
+            if both in separate equations
+                repeat case one for both unknowns
+            if both in same equations and both are different data types (ie force vs angle)
+                simplify() each equation -> combine knowns
+                set a sub equation.
+                merge sub equation into other equations
+
+
+    // Main program DEMO 1 // case of one unknown and one equation
+    collect the forces into a list (DONE)
+    initialize two separate lists (X and Y)
+    for each force
+        initialize a variable() for each force entity
+        count unknowns based on varaibles. 
+        add unknowns to unknown list
+        if unknowns greater than 2
+            unsolvable
+        else
+            // case of one unknown and one equation
+            combine all other terms except for the unknown -> simplify()
+            set unknown equal to that sum
+        
+            // case of two unknowns and 2 equation
+            if both in separate equations
+                repeat case one for both unknowns
+            if both in same equations and both are different data types (ie force vs angle)
+                simplify() each equation -> combine knowns
+                set a sub equation.
+                merge sub equation into other equations
 
 */
 // Solution Generator //
